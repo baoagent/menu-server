@@ -1,24 +1,20 @@
 
 import { PrismaClient } from '@prisma/client';
+import PDFDocument from 'pdfkit';
 
 const prisma = new PrismaClient();
 
-export const getMenu = async (restaurantId: string) => {
+export const getMenu = async () => {
     return await prisma.menuCategory.findMany({
-        where: { restaurantId },
         include: { menuItems: true },
     });
 };
 
-export const createMenuItem = async (restaurantId: string, menuItemData: any) => {
+export const createMenuItem = async (menuItemData: any) => {
     const { menuCategoryId, ...rest } = menuItemData;
     return await prisma.menuItem.create({
         data: {
             ...rest,
-            name_zh: menuItemData.name_en,
-            name_es: menuItemData.name_en,
-            description_zh: menuItemData.description_en,
-            description_es: menuItemData.description_en,
             menuCategory: {
                 connect: { id: menuCategoryId },
             },
@@ -37,13 +33,34 @@ export const deleteMenuItem = async (itemId: string) => {
     await prisma.menuItem.delete({ where: { id: itemId } });
 };
 
-export const createMenuCategory = async (restaurantId: string, name: string) => {
+export const createMenuCategory = async (name: string) => {
     return await prisma.menuCategory.create({
         data: {
             name,
-            restaurant: {
-                connect: { id: restaurantId },
-            },
         },
+    });
+};
+
+export const generatePdf = async (menu: any[]): Promise<Buffer> => {
+    return new Promise((resolve, reject) => {
+        const doc = new PDFDocument();
+        const buffers: Buffer[] = [];
+
+        doc.on('data', buffers.push.bind(buffers));
+        doc.on('end', () => {
+            resolve(Buffer.concat(buffers));
+        });
+
+        doc.fontSize(25).text('Menu', { align: 'center' });
+
+        menu.forEach(category => {
+            doc.fontSize(20).text(category.name, { underline: true });
+            category.menuItems.forEach((item: any) => {
+                doc.fontSize(15).text(`${item.name} - ${item.price}`);
+                doc.fontSize(10).text(item.description);
+            });
+        });
+
+        doc.end();
     });
 };

@@ -3,80 +3,27 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model Restaurant {
-  id            String    @id @default(cuid())
-  name          String
-  branding      Json?
-  menuCategories MenuCategory[]
-  users         User[]
-  generatedMenus GeneratedMenu[]
-}
-
-model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  password     String
-  role         String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  restaurantId String
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model MenuCategory {
-  id          String      @id @default(cuid())
-  name        String
-  restaurant  Restaurant  @relation(fields: [restaurantId], references: [id])
-  restaurantId String
-  menuItems   MenuItem[]
+  id        String     @id @default(cuid())
+  name      String
+  menuItems MenuItem[]
 }
 
 model MenuItem {
-  id             String        @id @default(cuid())
-  name_en        String
-  name_zh        String
-  name_es        String
-  description_en String
-  description_zh String
-  description_es String
+  id             String       @id @default(cuid())
+  name           String
+  description    String
   price          Float
-  menuCategory   MenuCategory  @relation(fields: [menuCategoryId], references: [id])
+  menuCategory   MenuCategory @relation(fields: [menuCategoryId], references: [id])
   menuCategoryId String
-  priceHistory   PriceHistory[]
-  orders         Order[]
-}
-
-model PriceHistory {
-  id        String   @id @default(cuid())
-  price     Float
-  date      DateTime @default(now())
-  menuItem  MenuItem @relation(fields: [menuItemId], references: [id])
-  menuItemId String
-}
-
-model Order {
-  id        String   @id @default(cuid())
-  quantity  Int
-  partySize Int
-  menuItem  MenuItem @relation(fields: [menuItemId], references: [id])
-  menuItemId String
-}
-
-model MenuTemplate {
-  id            String   @id @default(cuid())
-  name          String
-  layout        Json
-  generatedMenus GeneratedMenu[]
 }
 
 model GeneratedMenu {
-  id           String       @id @default(cuid())
-  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
-  restaurantId String
-  template     MenuTemplate @relation(fields: [templateId], references: [id])
-  templateId   String
-  createdAt    DateTime     @default(now())
-  filePath     String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  filePath  String
 }

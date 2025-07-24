@@ -1,11 +1,9 @@
 
 import { Router } from 'express';
-import authRoutes from './authRoutes';
-import restaurantRoutes from './restaurantRoutes';
+import menuRoutes from './menuRoutes';
 
 const router = Router();
 
-router.use('/auth', authRoutes);
-router.use('/restaurants', restaurantRoutes);
+router.use('/menu', menuRoutes);
 
 export default router;

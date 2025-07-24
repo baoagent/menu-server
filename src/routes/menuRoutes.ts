@@ -1,14 +1,14 @@
 
 import { Router } from 'express';
-import { getMenu, createMenuItem, updateMenuItem, deleteMenuItem, createMenuCategory } from '../controllers/menuController';
-import { authMiddleware } from '../middlewares/authMiddleware';
+import { getMenu, createMenuItem, updateMenuItem, deleteMenuItem, createMenuCategory, generatePdf } from '../controllers/menuController';
 
-const router = Router({ mergeParams: true });
+const router = Router();
 
 router.get('/', getMenu);
-router.post('/items', authMiddleware, createMenuItem);
-router.put('/items/:itemId', authMiddleware, updateMenuItem);
-router.delete('/items/:itemId', authMiddleware, deleteMenuItem);
-router.post('/categories', authMiddleware, createMenuCategory);
+router.post('/items', createMenuItem);
+router.put('/items/:itemId', updateMenuItem);
+router.delete('/items/:itemId', deleteMenuItem);
+router.post('/categories', createMenuCategory);
+router.get('/pdf', generatePdf);
 
 export default router;

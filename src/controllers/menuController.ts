@@ -4,8 +4,7 @@ import * as menuService from '../services/menuService';
 
 export const getMenu = async (req: Request, res: Response) => {
     try {
-        const { restaurantId } = req.params;
-        const menu = await menuService.getMenu(restaurantId);
+        const menu = await menuService.getMenu();
         res.json(menu);
     } catch (error) {
         res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
@@ -14,9 +13,8 @@ export const getMenu = async (req: Request, res: Response) => {
 
 export const createMenuItem = async (req: Request, res: Response) => {
     try {
-        const { restaurantId } = req.params;
         const menuItemData = req.body;
-        const menuItem = await menuService.createMenuItem(restaurantId, menuItemData);
+        const menuItem = await menuService.createMenuItem(menuItemData);
         res.status(201).json(menuItem);
     } catch (error) {
         res.status(500).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
@@ -46,10 +44,21 @@ export const deleteMenuItem = async (req: Request, res: Response) => {
 
 export const createMenuCategory = async (req: Request, res: Response) => {
     try {
-        const { restaurantId } = req.params;
         const { name } = req.body;
-        const menuCategory = await menuService.createMenuCategory(restaurantId, name);
+        const menuCategory = await menuService.createMenuCategory(name);
         res.status(201).json(menuCategory);
+    } catch (error) {
+        res.status(500).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+    }
+};
+
+export const generatePdf = async (req: Request, res: Response) => {
+    try {
+        const menu = await menuService.getMenu();
+        const pdf = await menuService.generatePdf(menu);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=menu.pdf');
+        res.send(pdf);
     } catch (error) {
         res.status(500).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
