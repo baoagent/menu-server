@@ -64,3 +64,6 @@ npm start
 - `DELETE /menu/items/:itemId`: Delete a menu item.
 - `POST /menu/categories`: Create a new menu category.
 - `GET /menu/pdf`: Generate and download a PDF of the menu.
+
+## Schema:
+See src/db/init.ts
