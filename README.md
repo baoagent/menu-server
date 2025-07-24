@@ -10,7 +10,7 @@ A lightweight backend server for managing a single restaurant menu, with CRUD op
 ## Architecture
 
 - **Backend**: Node.js + Express + TypeScript
-- **Database**: SQLite with Prisma ORM
+- **Database**: SQLite
 - **PDF Generation**: pdfkit
 
 ## Prerequisites
@@ -32,7 +32,7 @@ A lightweight backend server for managing a single restaurant menu, with CRUD op
 
 3. **Set up the database**
    ```bash
-   npx prisma db push
+   npm run db:init
    ```
 
 ## Getting Started
@@ -58,9 +58,9 @@ npm start
 
 ### Menu
 
-- `GET /`: Get the complete menu.
-- `POST /items`: Create a new menu item.
-- `PUT /items/:itemId`: Update an existing menu item.
-- `DELETE /items/:itemId`: Delete a menu item.
-- `POST /categories`: Create a new menu category.
-- `GET /pdf`: Generate and download a PDF of the menu.
+- `GET /menu`: Get the complete menu.
+- `POST /menu/items`: Create a new menu item.
+- `PUT /menu/items/:itemId`: Update an existing menu item.
+- `DELETE /menu/items/:itemId`: Delete a menu item.
+- `POST /menu/categories`: Create a new menu category.
+- `GET /menu/pdf`: Generate and download a PDF of the menu.

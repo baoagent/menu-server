@@ -1,6 +1,7 @@
 
 import { Request, Response } from 'express';
 import * as menuService from '../services/menuService';
+import { MenuCategory } from '../types';
 
 export const getMenu = async (req: Request, res: Response) => {
     try {
@@ -54,7 +55,7 @@ export const createMenuCategory = async (req: Request, res: Response) => {
 
 export const generatePdf = async (req: Request, res: Response) => {
     try {
-        const menu = await menuService.getMenu();
+        const menu: MenuCategory[] = await menuService.getMenu();
         const pdf = await menuService.generatePdf(menu);
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename=menu.pdf');
