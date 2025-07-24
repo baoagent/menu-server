@@ -59,11 +59,35 @@ npm start
 ### Menu
 
 - `GET /menu`: Get the complete menu.
+  ```bash
+  curl http://localhost:3000/menu
+  ```
 - `POST /menu/items`: Create a new menu item.
+  ```bash
+  curl -X POST -H "Content-Type: application/json" \
+  -d '{"name": "Spring Rolls", "description": "Crispy fried spring rolls.", "price": 5.99, "menuCategoryId": "YOUR_CATEGORY_ID"}' \
+  http://localhost:3000/menu/items
+  ```
 - `PUT /menu/items/:itemId`: Update an existing menu item.
+  ```bash
+  curl -X PUT -H "Content-Type: application/json" \
+  -d '{"price": 6.49}' \
+  http://localhost:3000/menu/items/YOUR_ITEM_ID
+  ```
 - `DELETE /menu/items/:itemId`: Delete a menu item.
+  ```bash
+  curl -X DELETE http://localhost:3000/menu/items/YOUR_ITEM_ID
+  ```
 - `POST /menu/categories`: Create a new menu category.
+  ```bash
+  curl -X POST -H "Content-Type: application/json" \
+  -d '{"name": "Appetizers"}' \
+  http://localhost:3000/menu/categories
+  ```
 - `GET /menu/pdf`: Generate and download a PDF of the menu.
+  ```bash
+  curl -o menu.pdf http://localhost:3000/menu/pdf
+  ```
 
 ## Schema:
 See src/db/init.ts
