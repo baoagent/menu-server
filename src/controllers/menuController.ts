@@ -53,6 +53,16 @@ export const createMenuCategory = async (req: Request, res: Response) => {
     }
 };
 
+export const deleteCategory = async (req: Request, res: Response) => {
+    try {
+        const { categoryId } = req.params;
+        await menuService.deleteCategory(categoryId);
+        res.status(204).send();
+    } catch (error) {
+        res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+    }
+};
+
 export const generatePdf = async (req: Request, res: Response) => {
     try {
         const menu: MenuCategory[] = await menuService.getMenu();

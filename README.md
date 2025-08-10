@@ -83,6 +83,9 @@ npm start
   curl -X POST -H "Content-Type: application/json" \
   -d '{"name": "Appetizers"}' \
   http://localhost:3001/api/menu/categories
+- `DELETE /menu/categories/:categoryId`: Delete a menu category.
+  ```bash
+  curl -X DELETE http://localhost:3001/api/menu/categories/YOUR_CATEGORY_ID
   ```
 - `GET /menu/pdf`: Generate and download a PDF of the menu.
   ```bash

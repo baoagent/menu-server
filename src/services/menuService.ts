@@ -78,6 +78,15 @@ export const createMenuCategory = async (name: string): Promise<MenuCategory> =>
     return { id, name, menuItems: [] };
 };
 
+export const deleteCategory = async (categoryId: string): Promise<number> => {
+    const deleteItemsQuery = `DELETE FROM MenuItem WHERE menuCategoryId = ?`;
+    const deleteCategoryQuery = `DELETE FROM MenuCategory WHERE id = ?`;
+
+    await runAsync(deleteItemsQuery, [categoryId]);
+    const result = await runAsync(deleteCategoryQuery, [categoryId]);
+    return result.changes || 0;
+};
+
 export const generatePdf = async (menu: MenuCategory[]): Promise<Buffer> => {
     return new Promise((resolve, reject) => {
         const doc = new PDFDocument();
